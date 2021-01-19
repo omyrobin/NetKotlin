@@ -1,5 +1,7 @@
 package com.omyrobin.network.exception
 
+import android.os.Handler
+import android.os.Looper
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import org.json.JSONException
@@ -19,6 +21,8 @@ import kotlin.coroutines.CoroutineContext
 class HandlerException constructor() : CoroutineExceptionHandler {
 
     var error: IError? = null
+
+    val handler = Handler(Looper.getMainLooper())
 
     constructor(error: IError?) : this() {
         this.error = error
@@ -130,8 +134,10 @@ class HandlerException constructor() : CoroutineExceptionHandler {
      */
     inner class NetThrowable(code: Int, override var message: String?) : Throwable() {
         init {
-            error?.onFail(code, message)
-            println("exception : code is $code  message is $message")
+            handler.post {
+                error?.onFail(code, message)
+                println("exception : code is $code  message is $message")
+            }
         }
     }
 
@@ -140,8 +146,10 @@ class HandlerException constructor() : CoroutineExceptionHandler {
      */
     inner class BusinessThrowable constructor(var code: Int, var error_msg: String?) : Throwable() {
         init {
-            error?.onError(code, error_msg)
-            println("exception : code is $code  message is $error_msg")
+            handler.post {
+                error?.onError(code, error_msg)
+                println("exception : code is $code  message is $error_msg")
+            }
         }
     }
 }
