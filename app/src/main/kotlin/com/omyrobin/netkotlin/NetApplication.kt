@@ -14,6 +14,6 @@ class NetApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         //此处可以添加适合自己项目的NetConfig
-//        NetworkManager.init(this, NetConfig())
+        NetworkManager.init(this, NetConfig())
     }
 }

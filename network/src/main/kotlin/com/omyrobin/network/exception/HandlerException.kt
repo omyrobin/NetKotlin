@@ -8,6 +8,7 @@ import org.json.JSONException
 import retrofit2.HttpException
 import java.io.InterruptedIOException
 import java.io.NotSerializableException
+import java.lang.Exception
 import java.net.*
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
@@ -18,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
  * @CreateDate: 2020/11/18 3:08 PM
  * @Description:
  */
-class HandlerException constructor() : CoroutineExceptionHandler {
+class HandlerException constructor() : Exception() {
 
     var error: IError? = null
 
@@ -86,10 +87,14 @@ class HandlerException constructor() : CoroutineExceptionHandler {
         private const val OTHER_ERROR = 9999
     }
 
-    override val key: CoroutineContext.Key<*>
-        get() = CoroutineExceptionHandler
+//    override val key: CoroutineContext.Key<*>
+//        get() = CoroutineExceptionHandler
+//
+//    override fun handleException(context: CoroutineContext, e: Throwable) {
+//        handleException(e)
+//    }
 
-    override fun handleException(context: CoroutineContext, e: Throwable) {
+    fun handleException(e: Throwable) {
         if (e is HttpException) {
             when (e.code()) {
                 UNAUTHORIZED -> NetThrowable(UNAUTHORIZED, e.message)

@@ -5,6 +5,7 @@ import com.omyrobin.network.tls.SSLState
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
+import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.net.ssl.HostnameVerifier
@@ -73,5 +74,7 @@ interface INetConfig {
     fun converterFactory(): Converter.Factory {
         return GsonConverterFactory.create()
     }
+
+    fun responseCallAdapter(): CallAdapter.Factory
 
 }

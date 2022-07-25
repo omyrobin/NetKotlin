@@ -2,6 +2,7 @@ package com.omyrobin.netkotlin.network.transform
 
 import com.omyrobin.netkotlin.bean.BaseResponse
 import com.omyrobin.network.exception.HandlerException
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
@@ -16,9 +17,9 @@ object NetData {
 
     suspend fun <T> transform(response: BaseResponse<T>): T? {
         var data: T? = null
-        flow<BaseResponse<T>> {
+        flow {
             emit(response)
-        }.transform<BaseResponse<T>, T?> {
+        }.transform {
             println(Thread.currentThread().name)
             if (it.success()) {
                 emit(it.data)

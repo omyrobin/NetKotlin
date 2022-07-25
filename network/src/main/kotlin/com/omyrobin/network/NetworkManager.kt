@@ -117,6 +117,7 @@ object NetworkManager {
             retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(client)
+                .addCallAdapterFactory(netConfig.responseCallAdapter())
                 .addConverterFactory(netConfig.converterFactory())
                 .build()
         }
